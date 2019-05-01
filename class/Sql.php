@@ -10,7 +10,7 @@
          $this->setParam($statment, $key, $value);
        }
      }
-     private function setParam($statment, $Key,$value){
+     private function setParam($statment, $key,$value){
        $statment->bindParam($key, $value);
      }
      public function query($rowQuery, $params = array()){
