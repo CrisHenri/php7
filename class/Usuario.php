@@ -50,8 +50,43 @@
         $this->setIdUsuario($row['idUsuario']);
         $this->setDesLogin($row['desLogin']);
         $this->setDesSenha($row['desSenha']);
-        $this->setDtCadastro(new DateTime($row['$dtCadastro']));
+        $this->setDtCadastro(new DateTime($row['dtCadastro']));
       }
+    }
+
+    public static function getList(){
+      $sql = new Sql();
+
+      return $sql->select("SELECT * FROM tb_usuarios ORDER BY desLogin");
+    }
+
+    public static function search($login) {
+      $sql = new Sql();
+
+      return $sql->select("SELECT * FROM tb_usuarios WHERE desLogin LIKE :SEARCH ORDER BY desLogin ", array(
+        ':SEARCH'=>"%".$login."%"
+      ));
+    }
+
+    public function logar($login, $password){
+        $sql = new Sql();
+
+        $result = $sql->select("SELECT * FROM tb_usuarios WHERE desLogin = :LOGIN AND desSenha = :PASSWORD ", array(
+          ':LOGIN' => $login,
+          ':PASSWORD' => $password
+        ));
+
+        if(count($result) > 0){
+
+            $row = $result[0];
+
+            $this->setIdUsuario($row['idUsuario']);
+            $this->setDesLogin($row['desLogin']);
+            $this->setDesSenha($row['desSenha']);
+            $this->setDtCadastro(new DateTime($row['dtCadastro']));
+          }else {
+            throw new Exception("Login ou senha inválidos!");
+          }
     }
 
     public function __toString() {
